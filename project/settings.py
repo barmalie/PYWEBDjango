@@ -14,8 +14,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
-load_dotenv()
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+load_dotenv() # python3.10 manage.py collectstatic  не видит импорт в bash
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
