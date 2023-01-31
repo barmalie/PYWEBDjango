@@ -1,6 +1,8 @@
 from django.apps import AppConfig
 
 
-class CartConfig(AppConfig):
+class LoginConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.cart'
+    #name = 'login'
+    name = 'apps.login'
+    #name = 'login'
