@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render, redirect
-from cart.models import Cart, CartItem
+from .models import Cart, CartItem
 # from django.views import View
 #
 # class CartView(View):
