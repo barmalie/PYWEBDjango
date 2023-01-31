@@ -7,4 +7,5 @@ urlpatterns = [
    path('', include('apps.common.urls')),
    #path('login/', include('apps.login.urls')),
    path('', include('apps.login.urls')),
+   path('', include('apps.home.urls')),
 ]
