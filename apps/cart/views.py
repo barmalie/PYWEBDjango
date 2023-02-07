@@ -27,6 +27,8 @@ def update_item(request, item_id):
    return redirect('cart:view_cart')
 
 
+
+
 def remove_item(request, item_id):
    CartItem.objects.filter(id=item_id).delete()
    return redirect('cart:view_cart')
