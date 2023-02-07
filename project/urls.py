@@ -8,4 +8,5 @@ urlpatterns = [
    #path('login/', include('apps.login.urls')),
    path('other/', include('apps.login.urls')),
    path('', include('apps.home.urls')),
+   path('cart/', include('apps.cart_shop.urls')),
 ]
