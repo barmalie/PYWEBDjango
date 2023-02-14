@@ -2,7 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from .models import CartItemShop, Cart, Product
 from decimal import Decimal
-
+from django.shortcuts import render, get_object_or_404
+from .models import CartItemShop, Cart, Product
 
 class ViewCart(View):
     def get(self, request):
@@ -34,6 +35,14 @@ class ViewCartBuy(View):
     def get(self, request, product_id):
         save_product_in_cart(request, product_id)
         return redirect('cart_shop:cart')
+
+# class ViewCartBuy(View):
+#    def get(self, request, product_id):
+#        product = get_object_or_404(Product, id=product_id)
+#        cart_user = get_object_or_404(Cart, user=request.user)
+#        cart_item = CartItemShop(cart=cart_user, product=product)
+#        cart_item.save()
+
 
 class ViewCartAdd(View):
    def get(self, request, product_id):
