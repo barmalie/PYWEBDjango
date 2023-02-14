@@ -34,7 +34,7 @@ class CreateUserView(View):
            user.save()
            return redirect('home:index')
        return redirect('auth_shop:create')
-
+       #return render(request, "auth_shop/create_account.html", context={'errors': form.errors})
 
 # class LoginView(View):
 #     def get(self, request):
