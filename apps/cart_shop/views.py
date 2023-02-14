@@ -49,6 +49,14 @@ class ViewCartAdd(View):
        save_product_in_cart(request, product_id)
        return redirect('home:index')
 
+# class ViewCartAdd(View):
+#    def get(self, request, product_id):
+#        product = get_object_or_404(Product, id=product_id)
+#        cart_user = get_object_or_404(Cart, user=request.user)
+#        cart_item = CartItemShop(cart=cart_user, product=product)
+#        cart_item.save()
+#        return redirect('home:index')
+
 class ViewCartDel(View):
    def get(self, request, item_id):
        cart = fill_card_in_session(request)
@@ -90,7 +98,26 @@ class ViewCartDel(View):
                cart_item = CartItemShop(cart=cart_user, product=product)
            cart_item.save()
 
-       cart[str(product_id)] = cart.get(str(product_id), 0) + 1
+   # def save_product_in_cart(request, product_id):
+   #     product = get_object_or_404(Product, id=product_id)
+   #     cart_user = get_object_or_404(Cart, user=request.user)
+   #     cart_item = CartItemShop(cart=cart_user, product=product)
+   #     cart_item.save()
+
+   # def save_product_in_cart(request, product_id):
+   #     cart_items = CartItemShop.objects.filter(cart__user=request.user,
+   #                                              product__id=product_id)
+   #     if cart_items:
+   #         cart_item = cart_items[0]
+   #         cart_item.quantity += 1
+   #     else:
+   #         product = get_object_or_404(Product, id=product_id)
+   #     cart_user = get_object_or_404(Cart, user=request.user)
+   #     cart_item = CartItemShop(cart=cart_user, product=product)
+
+   cart_item.save()
+
+   cart[str(product_id)] = cart.get(str(product_id), 0) + 1
        request.session['cart'] = cart
 
        if cart_items:
