@@ -6,7 +6,7 @@ from .forms import CustomUserCreationForm
 
 class Login(View):
    def get(self, request):
-       return render(request, "auth_shop/index.html")
+       return render(request, "auth_shop/index_login_2.html")
 
    def post(self, request):
        form = AuthenticationForm(data=request.POST)
