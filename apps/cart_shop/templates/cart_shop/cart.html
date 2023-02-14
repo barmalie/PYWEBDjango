@@ -114,6 +114,7 @@
 						      </tr>
 						    </thead>
 						    <tbody>
+                            {% for item in cart_items %}
 						      <tr class="text-center">
 						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 						        
@@ -134,7 +135,7 @@
 						        
 						        <td class="total">$4.90</td>
 						      </tr><!-- END TR-->
-
+                                {%endfor%}
 						      <tr class="text-center">
 						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 						        
@@ -163,16 +164,27 @@
     		<div class="row justify-content-end">
     			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
     				<div class="cart-total mb-3">
-    					<h3>Coupon Code</h3>
-    					<p>Enter your coupon code if you have one</p>
-  						<form action="#" class="info">
-	              <div class="form-group">
-	              	<label for="">Coupon code</label>
-	                <input type="text" class="form-control text-left px-3" placeholder="">
-	              </div>
-	            </form>
-    				</div>
-    				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Apply Coupon</a></p>
+                      <h3>Cart Totals</h3>
+                      <p class="d-flex">
+                         <span>Subtotal</span>
+                         <span>${{total_price_no_discount}}</span>
+                      </p>
+                      <p class="d-flex">
+                         <span>Delivery</span>
+                         <span>$0.00</span>
+                      </p>
+                      <p class="d-flex">
+                         <span>Discount</span>
+                         <span>${{total_discount}}</span>
+                      </p>
+                      <hr>
+                      <p class="d-flex total-price">
+                         <span>Total</span>
+                         <span>${{total_sum}}</span>
+                      </p>
+                    </div>
+
+    				<p><a href="{%  url  'checkout:checkout' %}" class="btn btn-primary py-3 px-4">Apply Coupon</a></p>
     			</div>
     			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
     				<div class="cart-total mb-3">

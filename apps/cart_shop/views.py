@@ -3,6 +3,7 @@ from django.views import View
 from .models import CartItemShop, Cart, Product
 from decimal import Decimal
 
+
 class ViewCart(View):
     def get(self, request):
         cart = fill_card_in_session(request)
