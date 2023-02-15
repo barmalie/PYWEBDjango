@@ -1,8 +1,6 @@
-from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from .models import CartItemShop, Cart, Product
 from decimal import Decimal
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,redirect
 from .models import CartItemShop, Cart, Product
 
 class ViewCart(View):
