@@ -2,6 +2,39 @@ from django.views import View
 from decimal import Decimal
 from django.shortcuts import render, get_object_or_404,redirect
 from .models import CartItemShop, Cart, Product
+from apps.cart_shop.views import fill_card_in_session, fill_id_card_in_session
+
+
+def fill_card_in_session(request):
+    cart = request.session.get('cart', {})
+    if request.user.is_authenticated and not cart:
+        cart_items = CartItemShop.objects.filter(cart__user=request.user)
+        for item in cart_items:
+            cart[item.product.id] = item.quantity
+        request.session['cart'] = cart
+    return cart
+
+
+def fill_id_card_in_session(request):
+    id_cart = request.session.get('id_cart', None)
+    if request.user.is_authenticated and not cart:
+        id_cart = Cart.objects.get(user=request.user).id
+        request.session['id_cart'] = id_cart
+    return id_cart
+
+def save_product_in_cart(request, product_id):
+   cart = fill_card_in_session(request)
+   if request.user.is_authenticated:
+       cart_items = CartItemShop.objects.filter(cart__user=request.user,
+                                                product__id=product_id)
+       if cart_items:
+           cart_item = cart_items[0]
+           cart_item.quantity += 1
+       else:
+           product = get_object_or_404(Product, id=product_id)
+           cart_user = get_object_or_404(Cart, user=request.user)
+           cart_item = CartItemShop(cart=cart_user, product=product)
+       cart_item.save()
 
 class ViewCart(View):
     def get(self, request):
@@ -28,8 +61,6 @@ class ViewCart(View):
         return render(request, 'cart_shop/cart.html', context)
 
 class ViewCartBuy(View):
-
-
     def get(self, request, product_id):
         save_product_in_cart(request, product_id)
         return redirect('cart_shop:cart')
@@ -66,35 +97,9 @@ class ViewCartDel(View):
        request.session["cart"] = cart
        return redirect('cart_shop:cart')
 
-   def fill_card_in_session(request):
-       cart = request.session.get('cart', {})
-       if request.user.is_authenticated and not cart:
-           cart_items = CartItemShop.objects.filter(cart__user=request.user)
-           for item in cart_items:
-               cart[item.product.id] = item.quantity
-           request.session['cart'] = cart
-       return cart
 
-   def fill_id_card_in_session(request):
-       id_cart = request.session.get('id_cart', None)
-       if request.user.is_authenticated and not cart:
-           id_cart = Cart.objects.get(user=request.user).id
-           request.session['id_cart'] = id_cart
-       return id_cart
 
-   def save_product_in_cart(request, product_id):
-       cart = fill_card_in_session(request)
-       if request.user.is_authenticated:
-           cart_items = CartItemShop.objects.filter(cart__user=request.user,
-                                                    product__id=product_id)
-           if cart_items:
-               cart_item = cart_items[0]
-               cart_item.quantity += 1
-           else:
-               product = get_object_or_404(Product, id=product_id)
-               cart_user = get_object_or_404(Cart, user=request.user)
-               cart_item = CartItemShop(cart=cart_user, product=product)
-           cart_item.save()
+
 
    # def save_product_in_cart(request, product_id):
    #     product = get_object_or_404(Product, id=product_id)
@@ -113,16 +118,6 @@ class ViewCartDel(View):
    #     cart_user = get_object_or_404(Cart, user=request.user)
    #     cart_item = CartItemShop(cart=cart_user, product=product)
 
-   cart_item.save()
 
-   cart[str(product_id)] = cart.get(str(product_id), 0) + 1
-       request.session['cart'] = cart
 
-       if cart_items:
-           cart_item = cart_items[0]
-           cart_item.quantity += 1
-       else:
-           product = get_object_or_404(Product, id=product_id)
-           cart_user = get_object_or_404(Cart, user=request.user)
-           cart_item = CartItemShop(cart=cart_user, product=product)
-       cart_item.save()
+
