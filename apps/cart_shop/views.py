@@ -4,6 +4,17 @@ from django.shortcuts import render, get_object_or_404,redirect
 from .models import CartItemShop, Cart, Product
 from apps.cart_shop.views import fill_card_in_session, fill_id_card_in_session
 
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from .serializers import CartSerializer
+
+class CartViewSet(viewsets.ModelViewSet):
+   queryset = CartItemShop.objects.all()
+   serializer_class = CartSerializer
+   permission_classes = (IsAuthenticated,)
+
+   def get_queryset(self):
+       return self.queryset.filter(cart__user=self.request.user)
 
 def fill_card_in_session(request):
     cart = request.session.get('cart', {})
