@@ -17,7 +17,7 @@ def fill_card_in_session(request):
 
 def fill_id_card_in_session(request):
     id_cart = request.session.get('id_cart', None)
-    if request.user.is_authenticated and not cart:
+    if request.user.is_authenticated and not id_cart:
         id_cart = Cart.objects.get(user=request.user).id
         request.session['id_cart'] = id_cart
     return id_cart
@@ -35,6 +35,8 @@ def save_product_in_cart(request, product_id):
            cart_user = get_object_or_404(Cart, user=request.user)
            cart_item = CartItemShop(cart=cart_user, product=product)
        cart_item.save()
+       cart[str(product_id)] = cart.get(str(product_id), 0) + 1
+       request.session['cart'] = cart
 
 class ViewCart(View):
     def get(self, request):
