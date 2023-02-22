@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'apps.cart_shop',
     'apps.auth_shop',
     'rest_framework',
+    'apps.wishlist"'
 ]
 
 MIDDLEWARE = [

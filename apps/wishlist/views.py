@@ -58,8 +58,7 @@ def fill_id_card_in_session(request):
 
 def save_product_in_cart(request, product_id):
    cart = fill_card_in_session(request)
-
-    if request.user.is_authenticated:
+   if request.user.is_authenticated:
        cart_items = CartItemShop.objects.filter(cart__user=request.user,
                                                 product__id=product_id)
        if cart_items:

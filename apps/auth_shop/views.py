@@ -29,9 +29,10 @@ class CreateUserView(View):
        form = CustomUserCreationForm(data=request.POST)
        if form.is_valid():
            username = form.cleaned_data.get('username')
-           email = form.cleaned_data.get('email')
+           #email = form.cleaned_data.get('email')
            password = form.cleaned_data.get('password1')
            user = User.objects.create_user(username=username, email=email, password=password)
+           user = authenticate(username=username, email=email, password=password)
            cart = Cart(user=user)
            user.save()
            cart.save()
