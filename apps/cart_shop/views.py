@@ -154,7 +154,21 @@ class ViewCartDel(View):
    #         product = get_object_or_404(Product, id=product_id)
    #     cart_user = get_object_or_404(Cart, user=request.user)
    #     cart_item = CartItemShop(cart=cart_user, product=product)
+   class ViewWishList(View):
+    def get(selfself, request, product_id):
+        if request.user.is_authenticated:
+            product = get_object_or_404(Product, id=product_id)
+            cart_user = get_obgect_or_404(Cart, user=request.user)
+            wishlist_item = WishListItem(cart=cart_user, product=product)
+            wishlist_item.save()
+            return redirect('home:index')
+        else:
+            return redirect('auth_shop:login')
 
-
+class ViewWishListDel(View):
+    def get(self, request, item_id):
+        wishlist_item = get_object_or_404(WishListItem, id=item_id)
+        wishlist_item.delite()
+        return redirect('cart_shop:wishlist')
 
 
