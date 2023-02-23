@@ -14,7 +14,12 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
-load_dotenv() # python3.10 manage.py collectstatic  не видит импорт в bash
+
+path = '/home/aeksei/PYWEB-2020-autumn'
+    if path not in sys.path:
+        sys.path.append(path)
+os.environ['DJANGO_SETTINGS_MODULE'] = 'project.settings'
+load_dotenv(os.path.join(path, '.env')) # python3.10 manage.py collectstatic  не видит импорт в bash
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
