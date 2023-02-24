@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import sys
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -16,8 +17,8 @@ from dotenv import load_dotenv
 
 
 path = '/home/aeksei/PYWEB-2020-autumn'
-    if path not in sys.path:
-        sys.path.append(path)
+if path not in sys.path:
+    sys.path.append(path)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'project.settings'
 load_dotenv(os.path.join(path, '.env')) # python3.10 manage.py collectstatic  не видит импорт в bash
 
