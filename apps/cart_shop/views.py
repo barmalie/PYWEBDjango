@@ -174,8 +174,10 @@ class ViewWishListAdd(View):
             return redirect('auth_shop:login')
 
 class ViewWishListDel(View):
-    def get(self, request, product_id):
-        wishlist_item = get_object_or_404(ViewWishListItem, id=product_id)
+    def get(self, request, item_id):
+        product = get_object_or_404(Product, id=product_id)
+        cart_user = get_object_or_404(Cart, user=request.user)
+        wishlist_item = get_object_or_404(ViewWishListItem, id=item_id)
         wishlist_item.delite()
         return redirect('cart_shop:wishlist')
 

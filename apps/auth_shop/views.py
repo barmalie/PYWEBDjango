@@ -15,6 +15,7 @@ class Login(View):
            username = form.cleaned_data.get('username')
            password = form.cleaned_data.get('password')
            user = authenticate(username=username, password=password)
+           cart = Cart(user=user)
            if user is not None:
                login(request, user)
                print(user)
@@ -26,19 +27,20 @@ class CreateUserView(View):
        return render(request, "auth_shop/create_account.html")
 
    def post(self, request):
-       form = CustomUserCreationForm(data=request.POST)
+       form = AuthenticationForm(data=request.POST)
        if form.is_valid():
            username = form.cleaned_data.get('username')
            #email = form.cleaned_data.get('email')
-           password = form.cleaned_data.get('password1')
+           password = form.cleaned_data.get('password')
            #user = User.objects.create_user(username=username, email=email, password=password)
            user = authenticate(username=username, password=password)
            cart = Cart(user=user)
            user.save()
            cart.save()
-           login(request, user)
-           return redirect('home:index')
-       return redirect('auth_shop:create')
+           if user is not None:
+            login(request, user)
+            return redirect('home:index')
+       return redirect('auth_shop:login')
        #return render(request, "auth_shop/create_account.html", context={'errors': form.errors})
 
 # class LoginView(View):
