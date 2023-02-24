@@ -166,7 +166,7 @@ class ViewCartDel(View):
 #                 pass
 #             else:
 #                 product = get_object_or_404(Product, id=product_id)
-#                 cart_user = get_obgect_or_404(Cart, user=request.user)
+#                 cart_user = get_object_or_404(Cart, user=request.user)
 #                 wishlist_item = WishListItem(cart=cart_user, product=product)
 #                 wishlist_item.save()
 #             return redirect('home:index')

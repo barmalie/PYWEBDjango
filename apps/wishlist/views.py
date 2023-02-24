@@ -155,16 +155,23 @@ from .serializers import CartSerializer
    #     cart_item = CartItemShop(cart=cart_user, product=product)
 
 
-class ViewWishListItem(View):
+class ViewWishList(View):
     def get(self, request):
-        wishlist_items = ViewWishListItem.objects.filter(wishlist__user=request.user)
-        context = {'items': wishlist_items}
-        return render(request, 'wishlist/wishlist.html', context)
+        if request.user.is_authenticated:
+            wishlist_items = ViewWishListItem.objects.filter(wishlist__user=request.user)
+            data = list(wishlist_items)
+            context = {'wish_list_items': data}
+            return render(request, 'wishlist/wishlist.html', context)
+        else:
+            return redirect('auth_shop:login')
+       #return render(request, 'wishlist:login', context)
 
 
 class ViewWishListAdd(View):
     def get(self, request, product_id):
         if request.user.is_authenticated:
+            product = get_object_or_404(Product, id=product_id)
+            cart_user = get_object_or_404(Cart, user=request.user)
             wishlist_items =ViewWishListItem.object.filter(cart__user=request.user, product__id=product_id)
             if wishlist_items:
                 pass
@@ -179,7 +186,7 @@ class ViewWishListAdd(View):
 
 class ViewWishListDel(View):
     def get(self, request, item_id):
-        product = get_object_or_404(Product, id=product_id)
+        product = get_object_or_404(Product, id=item_id)
         cart_user = get_object_or_404(Cart, user=request.user)
         wishlist_item = get_object_or_404(ViewWishListItem, id=item_id)
         wishlist_item.delete()
