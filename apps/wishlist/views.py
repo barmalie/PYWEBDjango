@@ -170,8 +170,8 @@ class ViewWishList(View):
 class ViewWishListAdd(View):
     def get(self, request, product_id):
         if request.user.is_authenticated:
-            product = get_object_or_404(Product, id=product_id)
-            cart_user = get_object_or_404(Cart, user=request.user)
+            #product = get_object_or_404(Product, id=product_id)
+            #cart_user = get_object_or_404(Cart, user=request.user)
             wishlist_items =ViewWishListItem.object.filter(cart__user=request.user, product__id=product_id)
             if wishlist_items:
                 pass

@@ -15,6 +15,7 @@ class Login(View):
            password = form.cleaned_data.get('password')
            user = authenticate(username=username, password=password)
            cart = Cart(user=user)
+           user.save()
            if user is not None:
                login(request, user)
                return redirect('home:index')
@@ -22,7 +23,7 @@ class Login(View):
 
 class CreateUserView(View):
    def get(self, request):
-       return render(request, "auth_shop/index.html")
+       return render(request, "auth_shop/create_account.html")
 
    def post(self, request):
        form = AuthenticationForm(data=request.POST)
