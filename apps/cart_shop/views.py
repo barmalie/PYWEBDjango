@@ -9,69 +9,81 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import CartSerializer
 
 class CartViewSet(viewsets.ModelViewSet):
-   queryset = CartItemShop.objects.all()
-   serializer_class = CartSerializer
-   permission_classes = (IsAuthenticated,)
+    queryset = CartItemShop.objects.all()
+    serializer_class = CartSerializer
+    permission_classes = (IsAuthenticated,)
 
-   def get_queryset(self):
-       return self.queryset.filter(cart__user=self.request.user)
+    def get_queryset(self):
+        return self.queryset.filter(cart__user=self.request.user)
 
-   def create(self, request, *args, **kwargs):
-       cart_items = CartItemShop.objects.filter(cart__user=request.user,
+    def create(self, request, *args, **kwargs):
+        cart_items = CartItemShop.objects.filter(cart__user=request.user,
                                                 product__id=request.data.get('product'))
-       if cart_items:
-           cart_item = cart_items[0]
-           if request.data.get('quantity'):
+        if cart_items:
+            cart_item = cart_items[0]
+            if request.data.get('quantity'):
                cart_item.quantity += request.data.get('quantity')
-           else:
+            else:
                cart_item.quantity += 1
-       else:
-           product = get_object_or_404(Product, id=request.data.get('product'))
-           cart_user = get_object_or_404(Cart, user=request.user)
+        else:
+            product = get_object_or_404(Product, id=request.data.get('product'))
+            cart_user = get_object_or_404(Cart, user=request.user)
 
-           if request.data.get('quantity'):
-               cart_item = CartItemShop(cart=cart_user, product=product, quantity=request.data.get('quantity'))
+            if request.data.get('quantity'):
+                cart_item = CartItemShop(cart=cart_user, product=product, quantity=request.data.get('quantity'))
+            else:
+                cart_item = CartItemShop(cart=cart_user, product=product)
+        cart_item.save()
+        return response.Response({'message': 'Product added to cart'}, status=201)
+
+
+
+    def fill_card_in_session(request):
+        cart = request.session.get('cart', {})
+        if request.user.is_authenticated and not cart:
+            cart_items = CartItemShop.objects.filter(cart__user=request.user)
+            for item in cart_items:
+                cart[item.product.id] = item.quantity
+            request.session['cart'] = cart
+        return cart
+
+
+    def fill_id_card_in_session(request):
+        id_cart = request.session.get('id_cart', None)
+        if request.user.is_authenticated and not id_cart:
+            id_cart = Cart.objects.get(user=request.user).id
+            request.session['id_cart'] = id_cart
+        return id_cart
+
+    def save_product_in_cart(request, product_id):
+        cart = fill_card_in_session(request)
+
+        if request.user.is_authenticated:
+           cart_items = CartItemShop.objects.filter(cart__user=request.user,
+                                                    product__id=product_id)
+           if cart_items:
+               cart_item = cart_items[0]
+               cart_item.quantity += 1
            else:
+               product = get_object_or_404(Product, id=product_id)
+               cart_user = get_object_or_404(Cart, user=request.user)
                cart_item = CartItemShop(cart=cart_user, product=product)
-       cart_item.save()
-       return response.Response({'message': 'Product added to cart'}, status=201)
+           cart_item.save()
+           cart[str(product_id)] = cart.get(str(product_id), 0) + 1
+           request.session['cart'] = cart
+
+    def update(self, request, *args, **kwargs):
+        cart_item = get_object_or_404(CartItemShop, id=kwargs['pk'])
+        if request.data.get('quantity'):
+            cart_item.quantity = request.data['quantity']
+
+        if request.data.get('product'):
+            product = get_object_or_404(Product, id=request.data['product'])
+            cart_item.product = product
+            cart_item.save()
+            return response.Response({'massage': 'Product change to cart'}, status=201)
 
 
-
-
-def fill_card_in_session(request):
-    cart = request.session.get('cart', {})
-    if request.user.is_authenticated and not cart:
-        cart_items = CartItemShop.objects.filter(cart__user=request.user)
-        for item in cart_items:
-            cart[item.product.id] = item.quantity
-        request.session['cart'] = cart
-    return cart
-
-
-def fill_id_card_in_session(request):
-    id_cart = request.session.get('id_cart', None)
-    if request.user.is_authenticated and not id_cart:
-        id_cart = Cart.objects.get(user=request.user).id
-        request.session['id_cart'] = id_cart
-    return id_cart
-
-def save_product_in_cart(request, product_id):
-   cart = fill_card_in_session(request)
-
-    if request.user.is_authenticated:
-       cart_items = CartItemShop.objects.filter(cart__user=request.user,
-                                                product__id=product_id)
-       if cart_items:
-           cart_item = cart_items[0]
-           cart_item.quantity += 1
-       else:
-           product = get_object_or_404(Product, id=product_id)
-           cart_user = get_object_or_404(Cart, user=request.user)
-           cart_item = CartItemShop(cart=cart_user, product=product)
-       cart_item.save()
-       cart[str(product_id)] = cart.get(str(product_id), 0) + 1
-       request.session['cart'] = cart
 
 class ViewCart(View):
     def get(self, request):
