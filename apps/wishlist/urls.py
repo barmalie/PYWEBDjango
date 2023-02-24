@@ -1,15 +1,11 @@
-from django.db import models
-from apps.cart.models import Cart
-from apps.cart_shop.models import Product
+from django.urls import path
+from .views import ViewWishListItem, ViewWishListAdd, ViewWishListDel
 
-class viewWishListItem(models.Model):
-   wishlist = models.ForeignKey(Cart, on_delete=models.CASCADE)
-   product = models.ForeignKey(Product, on_delete=models.CASCADE)
-   quantity = models.IntegerField(default=1)
-   created_at = models.DateTimeField(auto_now_add=True)
-   updated_at = models.DateTimeField(auto_now=True)
+app_name = 'wishlist'
 
-   def __repr__(self):
-      return f"{self.wishlist}_{self.product}"
+urlpatterns = [
+    path('', ViewWishListItem.as_view(), name='wishlist'),
+    path('add_wishlist/<int:product_id>', ViewWishListAdd.as_view(), name='add_to_wishlist'),
+    path('del_wishlist/<int:item_id>', ViewWishListDel.as_view(), name='del_from_wishlist'),
 
 ]

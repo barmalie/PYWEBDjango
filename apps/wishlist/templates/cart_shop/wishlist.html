@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -66,14 +67,14 @@
               	<a class="dropdown-item" href="shop.html">Shop</a>
               	<a class="dropdown-item" href="wishlist.html">Wishlist</a>
                 <a class="dropdown-item" href="product-single.html">Single Product</a>
-                <a class="dropdown-item" href="cart.html">Cart</a>
+                <a class="dropdown-item" href="../../../cart_shop/templates/cart_shop/cart.html">Cart</a>
                 <a class="dropdown-item" href="checkout.html">Checkout</a>
               </div>
             </li>
 	          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
 	          <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
 	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+	          <li class="nav-item cta cta-colored"><a href="../../../cart_shop/templates/cart_shop/cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
 
 	        </ul>
 	      </div>
@@ -109,14 +110,17 @@
 						      </tr>
 						    </thead>
 						    <tbody>
+							{%for item in items%}
+
+
 						      <tr class="text-center">
-						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+						        <td class="product-remove"><a href="{% url 'wishlist:del_from_wishlist' item.id%}"><span class="ion-ios-close"></span></a></td>
 						        
-						        <td class="image-prod"><div class="img" style="background-image:url(images/product-1.jpg);"></div></td>
+						        <td class="image-prod"><div class="img" style="background-image:url({%static 'shop/image/product-1.jpg'%});"></div></td>
 						        
 						        <td class="product-name">
-						        	<h3>Bell Pepper</h3>
-						        	<p>Far far away, behind the word mountains, far from the countries</p>
+						        	<h3>{{item.product.name}}</h3>
+						        	<p>{{item.product.discription}}</p>
 						        </td>
 						        
 						        <td class="price">$4.90</td>
@@ -129,7 +133,7 @@
 						        
 						        <td class="total">$4.90</td>
 						      </tr><!-- END TR-->
-
+								{% endfor %}
 						      <tr class="text-center">
 						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 						        

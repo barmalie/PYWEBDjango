@@ -154,31 +154,31 @@ class ViewCartDel(View):
    #         product = get_object_or_404(Product, id=product_id)
    #     cart_user = get_object_or_404(Cart, user=request.user)
    #     cart_item = CartItemShop(cart=cart_user, product=product)
-class ViewWishListItem(View):
-    def get(self):
-        pass
-
-class ViewWishListAdd(View):
-    def get(self, request, product_id):
-        if request.user.is_authenticated:
-            wishlist_items =ViewWishListItem.object.filter(cart__user=request.user,product__id=product_id)
-            if wishlist_items:
-                pass
-            else:
-                product = get_object_or_404(Product, id=product_id)
-                cart_user = get_obgect_or_404(Cart, user=request.user)
-                wishlist_item = WishListItem(cart=cart_user, product=product)
-                wishlist_item.save()
-            return redirect('home:index')
-        else:
-            return redirect('auth_shop:login')
-
-class ViewWishListDel(View):
-    def get(self, request, item_id):
-        product = get_object_or_404(Product, id=product_id)
-        cart_user = get_object_or_404(Cart, user=request.user)
-        wishlist_item = get_object_or_404(ViewWishListItem, id=item_id)
-        wishlist_item.delite()
-        return redirect('cart_shop:wishlist')
+# class ViewWishListItem(View):
+#     def get(self):
+#         pass
+#
+# class ViewWishListAdd(View):
+#     def get(self, request, product_id):
+#         if request.user.is_authenticated:
+#             wishlist_items =ViewWishListItem.object.filter(cart__user=request.user,product__id=product_id)
+#             if wishlist_items:
+#                 pass
+#             else:
+#                 product = get_object_or_404(Product, id=product_id)
+#                 cart_user = get_obgect_or_404(Cart, user=request.user)
+#                 wishlist_item = WishListItem(cart=cart_user, product=product)
+#                 wishlist_item.save()
+#             return redirect('home:index')
+#         else:
+#             return redirect('auth_shop:login')
+#
+# class ViewWishListDel(View):
+#     def get(self, request, item_id):
+#         product = get_object_or_404(Product, id=product_id)
+#         cart_user = get_object_or_404(Cart, user=request.user)
+#         wishlist_item = get_object_or_404(ViewWishListItem, id=item_id)
+#         wishlist_item.delite()
+#         return redirect('cart_shop:wishlist')
 
 
