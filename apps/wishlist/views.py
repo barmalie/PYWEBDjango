@@ -178,7 +178,7 @@ class ViewWishListAdd(View):
             else:
                 product = get_object_or_404(Product, id=product_id)
                 cart_user = get_obgect_or_404(Cart, user=request.user)
-                wishlist_item = ViewWishListItem(cart=cart_user, product=product)
+                wishlist_item = ViewWishListItem(wishlist=cart_user, product=product)
                 wishlist_item.save()
             return redirect('home:index')
         else:
@@ -188,7 +188,7 @@ class ViewWishListDel(View):
     def get(self, request, item_id):
         product = get_object_or_404(Product, id=item_id)
         cart_user = get_object_or_404(Cart, user=request.user)
-        wishlist_item = get_object_or_404(ViewWishListItem, id=item_id)
+        wishlist_item = ViewWishListItem(wishlist=cart_user, product=product)
         wishlist_item.delete()
         return redirect('wishlist:wishlist')
 #
