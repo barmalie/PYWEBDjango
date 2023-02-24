@@ -81,8 +81,6 @@ class ViewCart(View):
             data = [{"product": product, "quantity": cart[str(product.id)], 'id': product.id} for product in products]
         else:
             data = []
-
-
         total_price_no_discount = sum(item['product'].price * item['quantity'] for item in data)
         if not total_price_no_discount:
             total_price_no_discount = Decimal("0.00")
