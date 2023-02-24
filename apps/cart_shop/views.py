@@ -1,6 +1,6 @@
 from django.views import View
 from decimal import Decimal
-from django.shortcuts import render, get_object_or_404,redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import CartItemShop, Cart, Product
 from apps.cart_shop.views import fill_card_in_session, fill_id_card_in_session
 
